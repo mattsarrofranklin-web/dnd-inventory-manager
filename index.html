@@ -52,7 +52,7 @@ footer{font-size:11px;color:var(--muted);text-align:center;padding:20px}
 .instruction{background:#f4f6f9;border-radius:9px;padding:10px;margin-top:8px}
 
 
-/* Version 0.8: parchment inventory-focused presentation */
+/* Version 0.9.3: parchment inventory-focused presentation */
 body{background:#e8d8b5!important;color:#342719!important;background-image:radial-gradient(ellipse at top,#f7edda 0%,#e8d8b5 72%,#d7c29a 100%)!important}
 header,.panel,.item,.damage-card{background:#fbf2df!important;color:#342719!important;border:1px solid #b99b6b!important;box-shadow:0 3px 10px rgba(70,45,18,.10)!important}
 h1,h2,.item-name{color:#56391e!important}
@@ -63,7 +63,7 @@ input,select,textarea{background:#fffaf0!important;color:#342719!important;borde
 .legacy-field{display:none!important}
 #sheet,#combat,#spellbook{display:none!important}
 
-/* Version 0.8: aged parchment treatment */
+/* Version 0.9.3: aged parchment treatment */
 :root{
  --bg:#d8bd88;--panel:#f1dfb5;--ink:#382514;--muted:#755b3c;
  --line:#b18a54;--accent:#71351f;--accent2:#e8d0a0;--danger:#8b2d22;--good:#526b35
@@ -145,9 +145,16 @@ input,select,textarea{
 .crop-box label{display:block;margin:10px 0}
 .crop-box input[type=range]{padding:0}
 </style>
-</head>
+
+  <meta name="theme-color" content="#6b4328">
+  <meta name="description" content="A parchment-themed D&D inventory manager.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+\1
 <body>
-<header><div class="head"><div><h1>D&D Inventory</h1><div class="sub">5e 2024 · Local character storage</div></div><span class="pill">Version 0.8</span></div></header>
+<header><div class="head"><div><h1>D&D Inventory</h1><div class="sub">5e 2024 · Local character storage</div></div><span class="pill">Version 0.9.3</span></div></header>
 <main>
 <div class="tabs">
 <button class="tab active" data-tab="characters">My Characters</button>
@@ -550,4 +557,13 @@ $("exportBtn").onclick=()=>{let blob=new Blob([JSON.stringify(data,null,2)],{typ
 $("importFile").onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let obj=JSON.parse(await f.text());if(!Array.isArray(obj.characters)||!Array.isArray(obj.customItems))throw Error();if(confirm("Import this backup? It will replace the data currently saved in this browser.")){data=obj;save();renderCharacters();renderInventory();renderSheet();renderCombat();renderCustom();alert("Backup imported.")}}catch{alert("That file doesn't look like a valid inventory backup.")}e.target.value=""};
 renderCharacters();renderInventory();renderSheet();renderCombat();renderSpellbook();renderLibrary();renderCustom();
 </script>
-</body></html>
+
+<script>
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(err => console.warn("Offline support could not be enabled:", err));
+  });
+}
+</script>
+
+\1</html>
